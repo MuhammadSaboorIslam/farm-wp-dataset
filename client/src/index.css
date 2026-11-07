@@ -45,3 +45,13 @@ body {
     @apply text-green-700 hover:underline;
   }
 }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  display: inline-block;
+  opacity: 0;
+  animation: rise 0.5s ease forwards;
+}
