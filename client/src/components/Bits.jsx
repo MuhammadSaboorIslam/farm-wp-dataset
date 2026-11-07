@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {STATUS_LABELS} from '../redux/orders'
 
 export function Loader(){
-  return <p className="text-center text-gray-500 py-10">Loading...</p>
+    return <p className="text-center text-gray-500 py-10">Loading...</p>
 }
 
 export function ErrorMsg({ message }){
@@ -38,16 +38,20 @@ export function Stars({ rating, count, onPick }){
   return (
     <span className="inline-flex items-center gap-0.5">
       {stars}
-      {count !== undefined && <span className="muted ml-1"> {rating ? rating + ' (' + count + ')' : 'No reviews yet'}</span>}
+      {count !== undefined && <span className="muted ml-1"> {(rating || 0) + ' (' + count + ')'}</span>}
     </span>
   )
 }
 
 export function Img({ src, alt='', className='' }){
   const [failed,setFailed] = useState(false)
-  let url = src
+    let url = src
   if (!url || failed){
     url = '/img/placeholder.svg'
   }
   return <img src={url} alt={alt} className={'object-cover bg-gray-100 ' + className} onError={() => setFailed(true)} />
+}
+
+export function Icon({ name, className='' }){
+  return <img src={'/icons/' + name + '.png'} alt="" className={'inline-block ' + className} />
 }

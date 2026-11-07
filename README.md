@@ -22,3 +22,5 @@ server
 3. copy .env.example to .env (MONGO_URI is already the local one)
 4. npm run dev
 5. in client/.env set VITE_USE_MOCK=false so the client talks to the server
+
+icons from icons8.com
