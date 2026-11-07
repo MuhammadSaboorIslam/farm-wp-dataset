@@ -5,7 +5,7 @@ import {setQty,removeFromCart,clearCart} from '../redux/cart'
 import {placeOrder,clearPlaced} from '../redux/orders'
 import {flash} from '../redux/ui'
 import {money} from '../helpers'
-import {Img} from '../components/Bits'
+import {Img,Icon} from '../components/Bits'
 
 function Cart(){
   const dispatch = useDispatch()
@@ -35,7 +35,7 @@ function Cart(){
     grand += groups[order[i]].total
   }
 
-  async function checkout(e){
+  async function PlaceOrder(e){
     e.preventDefault()
     if (!address.trim() || !phone.trim()){
       setFormerror('Address and phone are needed for delivery')
@@ -66,7 +66,7 @@ function Cart(){
     }
     return (
       <div className="card max-w-lg mx-auto p-6 mt-6 text-center">
-        <p className="text-5xl">✅</p>
+        <Icon name="check" className="w-16 h-16" />
         <h2 className="text-2xl font-bold mt-2">Thank you</h2>
         <p className="mt-2">Your order went to {placed.length === 1 ? 'the farm' : placed.length + ' farms'}. They will pack it and a rider will bring it over.</p>
         <ul className="my-4 text-sm">{links}</ul>
@@ -75,10 +75,10 @@ function Cart(){
     )
   }
 
-  if (items.length === 0){
+  if (items.length == 0){
     return (
       <div className="empty">
-        <p className="text-6xl mb-3">🛒</p>
+        <Icon name="cart-grey" className="w-20 h-20 mb-3" />
         <p className="text-lg">Your cart is empty.</p>
         <Link to="/" className="btn mt-4">Browse products</Link>
       </div>
@@ -106,9 +106,9 @@ function Cart(){
           </div>
           <div className="flex items-center justify-between sm:justify-end gap-4">
             <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-              <button className="px-3 py-1 hover:bg-gray-100 cursor-pointer" onClick={() => dispatch(setQty({ product: it.product, qty: Math.max(1, it.qty - 1) }))}>&minus;</button>
+              <button className="px-3 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => dispatch(setQty({ product: it.product, qty: Math.max(1, it.qty - 1) }))}><Icon name="minus" className="w-3 h-3" /></button>
               <input type="number" min="1" max={it.max} className="w-12 text-center py-1 focus:outline-none" value={it.qty} onChange={e => dispatch(setQty({ product: it.product, qty: Number(e.target.value) }))} />
-              <button className="px-3 py-1 hover:bg-gray-100 cursor-pointer" onClick={() => dispatch(setQty({ product: it.product, qty: Math.min(it.max, it.qty + 1) }))}>+</button>
+              <button className="px-3 py-2 hover:bg-gray-100 cursor-pointer" onClick={() => dispatch(setQty({ product: it.product, qty: Math.min(it.max, it.qty + 1) }))}><Icon name="plus-dark" className="w-3 h-3" /></button>
             </div>
             <span className="font-semibold w-24 text-right">{money(it.price * it.qty)}</span>
           </div>
@@ -129,7 +129,7 @@ function Cart(){
       {order.length > 1 && <p className="muted mb-3">Items from {order.length} farms become {order.length} separate orders, one per farm.</p>}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">{blocks}</div>
-        <form className="card p-5 h-fit md:sticky md:top-4 shadow-sm" onSubmit={checkout}>
+        <form className="card p-5 h-fit md:sticky md:top-4 shadow-sm" onSubmit={PlaceOrder}>
           <h3 className="text-lg font-semibold mb-3">Order summary</h3>
           <div className="text-sm flex flex-col gap-1 border-b border-gray-200 pb-3 mb-3">
             <p className="flex justify-between"><span className="text-gray-500">Items ({count})</span><span>{money(grand)}</span></p>

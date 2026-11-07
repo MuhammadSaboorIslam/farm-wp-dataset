@@ -26,14 +26,14 @@ function FarmerDashboard(){
     dispatch(loadMyUpdates())
   }, [dispatch])
 
-  async function remove(p){
+  async function removeproduct(p){
     if (window.confirm('Delete "' + p.name + '"?')){
       await dispatch(deleteProduct(p.id))
       flash(dispatch, 'ok', p.name + ' deleted')
     }
   }
 
-  function toggleActive(p){
+  function ToggleActive(p){
     dispatch(updateProduct({ id: p.id, form: { active: !p.active } }))
   }
 
@@ -46,12 +46,20 @@ function FarmerDashboard(){
     }
   }
 
-  async function pickImages(e){
+  async function pickimages(e){
     const urls = await readFiles(e.target.files)
     setImages(images.concat(urls))
   }
 
-  async function post(e){
+  function removeimage(index){
+    const left = []
+    for (let i = 0; i < images.length; i++){
+      if (i != index) left.push(images[i])
+    }
+    setImages(left)
+  }
+
+  async function postupdate(e){
     e.preventDefault()
     if (!title.trim()){
       setFormerror('Give the update a title')
@@ -80,8 +88,8 @@ function FarmerDashboard(){
         <td className="p-2">{p.active ? 'Listed' : 'Hidden'}</td>
         <td className="p-2 whitespace-nowrap text-right">
           <Link to={'/farmer/products/' + p.id + '/edit'} className="btn-ghost btn-sm mr-1">Edit</Link>
-          <button className="btn-ghost btn-sm mr-1" onClick={() => toggleActive(p)}>{p.active ? 'Hide' : 'Show'}</button>
-          <button className="btn-danger btn-sm" onClick={() => remove(p)}>Delete</button>
+          <button className="btn-ghost btn-sm mr-1" onClick={() => ToggleActive(p)}>{p.active ? 'Hide' : 'Show'}</button>
+          <button className="btn-danger btn-sm" onClick={() => removeproduct(p)}>Delete</button>
         </td>
       </tr>
     )
@@ -125,12 +133,13 @@ function FarmerDashboard(){
 
   const previews = []
   for (let i = 0; i < images.length; i++){
-    previews.push(<img key={i} src={images[i]} alt="" className="w-16 h-16 object-cover rounded cursor-pointer" onClick={() => setImages(images.filter((x, j) => j !== i))} />)
+    const n = i
+    previews.push(<img key={n} src={images[n]} alt="" className="w-16 h-16 object-cover rounded cursor-pointer" onClick={() => removeimage(n)} />)
   }
 
   let pending = 0
   for (let i = 0; i < orders.list.length; i++){
-    if (orders.list[i].status === 'placed') pending++
+    if (orders.list[i].status == 'placed') pending++
   }
 
   return (
@@ -182,7 +191,7 @@ function FarmerDashboard(){
 
       {tab === 'updates' && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <form className="card p-4 h-fit" onSubmit={post}>
+          <form className="card p-4 h-fit" onSubmit={postupdate}>
             <h3 className="text-lg font-semibold mb-3">Post an update</h3>
             <label className="label">Title
               <input className="input" value={title} onChange={e => setTitle(e.target.value)} disabled={!user.verified} placeholder="e.g. Strawberries this week" />
@@ -191,7 +200,7 @@ function FarmerDashboard(){
               <textarea rows="4" className="input" value={body} onChange={e => setBody(e.target.value)} disabled={!user.verified} />
             </label>
             <label className="label">Photos
-              <input type="file" accept="image/*" multiple className="input" onChange={pickImages} disabled={!user.verified} />
+              <input type="file" accept="image/*" multiple className="input" onChange={pickimages} disabled={!user.verified} />
             </label>
             <div className="flex gap-2 flex-wrap mb-3">{previews}</div>
             {(formerror || farms.saveError) && <p className="err">{formerror || farms.saveError}</p>}

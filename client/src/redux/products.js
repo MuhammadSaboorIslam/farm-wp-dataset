@@ -136,7 +136,11 @@ const productsSlice = createSlice({
     })
 
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
-      state.mine = state.mine.filter(p => p.id !== action.payload)
+      const keep = []
+      for (let i = 0; i < state.mine.length; i++){
+        if (state.mine[i].id != action.payload) keep.push(state.mine[i])
+      }
+      state.mine = keep
     })
 
     builder.addCase(addReview.fulfilled, (state, action) => {

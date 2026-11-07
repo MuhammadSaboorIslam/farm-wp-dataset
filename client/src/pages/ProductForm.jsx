@@ -19,12 +19,20 @@ function Form({ initial }){
   const [images, setImages] = useState(initial ? initial.images : [])
   const [formerror, setFormerror] = useState('')
 
-  async function pickImages(e){
+  async function pickimages(e){
     const urls = await readFiles(e.target.files)
     setImages(images.concat(urls))
   }
 
-  async function submit(e){
+  function removeimage(index){
+    const left = []
+    for (let i = 0; i < images.length; i++){
+      if (i != index) left.push(images[i])
+    }
+    setImages(left)
+  }
+
+  async function handlesubmit(e){
     e.preventDefault()
     if (!name.trim()){
       setFormerror('Product needs a name')
@@ -63,11 +71,11 @@ function Form({ initial }){
   const previews = []
   for (let i = 0; i < images.length; i++){
     const n = i
-    previews.push(<img key={n} src={images[n]} alt="" className="w-20 h-20 object-cover rounded cursor-pointer" title="Click to remove" onClick={() => setImages(images.filter((x, j) => j !== n))} />)
+    previews.push(<img key={n} src={images[n]} alt="" className="w-20 h-20 object-cover rounded cursor-pointer" title="Click to remove" onClick={() => removeimage(n)} />)
   }
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={handlesubmit}>
       <label className="label">Name
         <input className="input" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Tomatoes" />
       </label>
@@ -91,7 +99,7 @@ function Form({ initial }){
         </label>
       </div>
       <label className="label">Photos
-        <input type="file" accept="image/*" multiple className="input" onChange={pickImages} />
+        <input type="file" accept="image/*" multiple className="input" onChange={pickimages} />
       </label>
       <div className="flex gap-2 flex-wrap mb-2">{previews}</div>
       {previews.length > 0 && <p className="muted mb-3">Click a photo to remove it.</p>}

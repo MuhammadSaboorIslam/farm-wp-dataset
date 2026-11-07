@@ -17,6 +17,14 @@ export const setOrderStatus = createAsyncThunk('orders/status', ({id, status}) =
 export const loadAvailable = createAsyncThunk('orders/available', () => get('/orders/available'))
 export const claimOrder = createAsyncThunk('orders/claim', (id) => post('/orders/' + id + '/claim'))
 
+function withoutOrder(list, id){
+  const keep = []
+  for (let i = 0; i < list.length; i++){
+    if (list[i].id != id) keep.push(list[i])
+  }
+  return keep
+}
+
 function replaceIn(list, order){
   for (let i = 0; i < list.length; i++){
     if (list[i].id === order.id){
@@ -90,7 +98,7 @@ const ordersSlice = createSlice({
     builder.addCase(setOrderStatus.fulfilled, (state, action) => {
       const o = action.payload.order
       replaceIn(state.list, o)
-      state.available = state.available.filter(x => x.id !== o.id)
+      state.available = withoutOrder(state.available, o.id)
       if (state.current && state.current.id === o.id){
         state.current = o
       }
@@ -114,7 +122,7 @@ const ordersSlice = createSlice({
 
     builder.addCase(claimOrder.fulfilled, (state, action) => {
       const o = action.payload.order
-      state.available = state.available.filter(x => x.id !== o.id)
+      state.available = withoutOrder(state.available, o.id)
       state.list.unshift(o)
     })
     builder.addCase(claimOrder.rejected, (state, action) => {

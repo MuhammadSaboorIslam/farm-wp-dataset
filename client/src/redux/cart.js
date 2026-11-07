@@ -46,7 +46,11 @@ const cartSlice = createSlice({
       save(state.items)
     },
     removeFromCart(state, action){
-      state.items = state.items.filter(x => x.product !== action.payload)
+      const keep = []
+      for (let i = 0; i < state.items.length; i++){
+        if (state.items[i].product !== action.payload) keep.push(state.items[i])
+      }
+      state.items = keep
       save(state.items)
     },
     clearCart(state){

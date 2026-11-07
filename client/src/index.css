@@ -44,6 +44,33 @@ body {
   .link {
     @apply text-green-700 hover:underline;
   }
+  .bar {
+    @apply sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm;
+  }
+  .navlink {
+    @apply px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-gray-50;
+  }
+  .navlink.active {
+    @apply bg-green-50 text-green-700;
+  }
+  .badge {
+    @apply absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold min-w-4 h-4 px-1 rounded-full flex items-center justify-center;
+  }
+  .avatar {
+    @apply w-9 h-9 rounded-full bg-green-700 text-white font-bold flex items-center justify-center;
+  }
+  .dropdown {
+    @apply absolute left-0 md:left-auto md:right-0 top-full mt-2 w-80 max-w-[90vw] bg-white text-gray-800 rounded-xl shadow-xl border border-gray-100 z-30;
+  }
+  .hero {
+    @apply relative left-1/2 -translate-x-1/2 w-screen -mt-6 mb-8 overflow-hidden bg-gradient-to-br from-green-800 via-green-700 to-green-500 text-white;
+  }
+  .searchbar {
+    @apply flex items-center gap-2 w-full max-w-2xl mx-auto mt-10 bg-white rounded-full pl-3 pr-2 py-2 shadow-lg;
+  }
+  .searchinput {
+    @apply flex-1 min-w-0 px-2 py-2.5 text-left text-gray-800 placeholder-gray-400 focus:outline-none;
+  }
 }
 
 @keyframes rise {
@@ -51,7 +78,12 @@ body {
   to { opacity: 1; transform: none; }
 }
 .rise {
-  display: inline-block;
   opacity: 0;
   animation: rise 0.5s ease forwards;
+}
+
+.pattern {
+  background-image: radial-gradient(white 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  opacity: 0.12;
 }

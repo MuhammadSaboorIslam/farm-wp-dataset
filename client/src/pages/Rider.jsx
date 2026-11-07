@@ -16,7 +16,7 @@ function Rider(){
     dispatch(loadMyOrders())
   }, [dispatch])
 
-  async function claim(o){
+  async function ClaimOrder(o){
     const result = await dispatch(claimOrder(o.id))
     if (result.error){
       flash(dispatch, 'warn', result.error.message)
@@ -26,7 +26,7 @@ function Rider(){
     }
   }
 
-  async function change(o, status){
+  async function changestatus(o, status){
     const result = await dispatch(setOrderStatus({ id: o.id, status: status }))
     if (result.error){
       flash(dispatch, 'warn', result.error.message)
@@ -54,7 +54,7 @@ function Rider(){
 
   const availableRows = []
   for (let i = 0; i < available.length; i++){
-    availableRows.push(row(available[i], <button className="btn btn-sm" onClick={() => claim(available[i])}>Claim</button>))
+    availableRows.push(row(available[i], <button className="btn btn-sm" onClick={() => ClaimOrder(available[i])}>Claim</button>))
   }
 
   const activeRows = []
@@ -62,8 +62,8 @@ function Rider(){
   for (let i = 0; i < list.length; i++){
     const o = list[i]
     let action = null
-    if (o.status === 'packed') action = <button className="btn btn-sm" onClick={() => change(o, 'out_for_delivery')}>Picked up</button>
-    if (o.status === 'out_for_delivery') action = <button className="btn btn-sm" onClick={() => change(o, 'delivered')}>Delivered</button>
+    if (o.status === 'packed') action = <button className="btn btn-sm" onClick={() => changestatus(o, 'out_for_delivery')}>Picked up</button>
+    if (o.status === 'out_for_delivery') action = <button className="btn btn-sm" onClick={() => changestatus(o, 'delivered')}>Delivered</button>
     if (o.status === 'delivered' || o.status === 'cancelled'){
       doneRows.push(row(o, null))
     } else {

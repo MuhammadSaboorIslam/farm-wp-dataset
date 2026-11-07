@@ -23,7 +23,7 @@ function Farm(){
 
   const farm = current.farm
 
-  async function follow(){
+  async function FollowFarm(){
     const result = await dispatch(toggleFollow({ id: farm.id, following: current.following }))
     if (!result.error){
       flash(dispatch, 'ok', current.following ? 'Unfollowed ' + farm.farmName : 'You now follow ' + farm.farmName)
@@ -59,18 +59,18 @@ function Farm(){
           <p className="muted mt-2">{current.followers} followers &middot; {current.products.length} products</p>
         </div>
         {user && user.role === 'customer' && (
-          <button className={current.following ? 'btn-ghost' : 'btn'} onClick={follow}>
+          <button className={current.following ? 'btn-ghost' : 'btn'} onClick={FollowFarm}>
             {current.following ? 'Following' : 'Follow'}
           </button>
         )}
       </div>
 
       <h2 className="text-xl font-bold mb-3">Products</h2>
-      {cards.length === 0 && <p className="empty">Nothing listed right now.</p>}
+      {cards.length == 0 && <p className="empty">Nothing listed right now.</p>}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">{cards}</div>
 
       <h2 className="text-xl font-bold mb-3">Updates from the farm</h2>
-      {feed.length === 0 && <p className="empty">No updates posted yet.</p>}
+      {feed.length == 0 && <p className="empty">No updates posted yet.</p>}
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">{feed}</ul>
     </div>
   )

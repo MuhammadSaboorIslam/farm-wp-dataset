@@ -40,7 +40,7 @@ function Following(){
       <h2 className="text-2xl font-bold mb-4">Farms you follow</h2>
       {loading && <Loader />}
       {error && <ErrorMsg message={error} />}
-      {!loading && following.length === 0 && <p className="empty">You are not following any farms. Open a farm page and press Follow.</p>}
+      {!loading && following.length == 0 && <p className="empty">You are not following any farms. Open a farm page and press Follow.</p>}
       {!loading && <ul className="flex flex-col gap-3">{rows}</ul>}
     </div>
   )

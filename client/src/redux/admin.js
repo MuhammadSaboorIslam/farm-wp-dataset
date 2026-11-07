@@ -35,7 +35,11 @@ const adminSlice = createSlice({
     })
 
     builder.addCase(verifyFarmer.fulfilled, (state, action) => {
-      state.pending = state.pending.filter(f => f.id !== action.payload.farmer.id)
+      const keep = []
+      for (let i = 0; i < state.pending.length; i++){
+        if (state.pending[i].id !== action.payload.farmer.id) keep.push(state.pending[i])
+      }
+      state.pending = keep
       for (let i = 0; i < state.users.length; i++){
         if (state.users[i].id === action.payload.farmer.id){
           state.users[i] = action.payload.farmer

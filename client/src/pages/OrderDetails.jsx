@@ -4,7 +4,7 @@ import {useDispatch,useSelector} from 'react-redux'
 import {loadOrder,setOrderStatus,STATUS_LABELS} from '../redux/orders'
 import {flash} from '../redux/ui'
 import {money,PrettyDate} from '../helpers'
-import {StatusPill,Img,Loader,ErrorMsg} from '../components/Bits'
+import {StatusPill,Img,Loader,ErrorMsg,Icon} from '../components/Bits'
 
 const STEPS = ['placed', 'packed', 'out_for_delivery', 'delivered']
 
@@ -23,7 +23,7 @@ function OrderDetails(){
   if (error) return <ErrorMsg message={error} />
   if (!o) return null
 
-  async function change(status){
+  async function changestatus(status){
     if (status === 'cancelled' && !window.confirm('Cancel this order?')){
       return
     }
@@ -81,28 +81,28 @@ function OrderDetails(){
 
   let actions = null
   if (user.role === 'customer' && o.status === 'placed'){
-    actions = <button className="btn-danger w-full" onClick={() => change('cancelled')}>Cancel order</button>
+    actions = <button className="btn-danger w-full" onClick={() => changestatus('cancelled')}>Cancel order</button>
   }
   if (user.role === 'farmer' && o.status === 'placed'){
-    actions = <button className="btn w-full" onClick={() => change('packed')}>Mark as packed</button>
+    actions = <button className="btn w-full" onClick={() => changestatus('packed')}>Mark as packed</button>
   }
   if (user.role === 'rider' && o.rider && o.rider.id === user.id){
-    if (o.status === 'packed') actions = <button className="btn w-full" onClick={() => change('out_for_delivery')}>Picked up, out for delivery</button>
-    if (o.status === 'out_for_delivery') actions = <button className="btn w-full" onClick={() => change('delivered')}>Mark as delivered</button>
+    if (o.status === 'packed') actions = <button className="btn w-full" onClick={() => changestatus('out_for_delivery')}>Picked up, out for delivery</button>
+    if (o.status === 'out_for_delivery') actions = <button className="btn w-full" onClick={() => changestatus('delivered')}>Mark as delivered</button>
   }
   if (user.role === 'admin' && o.status !== 'delivered' && o.status !== 'cancelled'){
     const next = STEPS[STEPS.indexOf(o.status) + 1]
     actions = (
       <>
-        <button className="btn w-full" onClick={() => change(next)}>Move to {STATUS_LABELS[next]}</button>
-        {o.status === 'placed' && <button className="btn-danger w-full" onClick={() => change('cancelled')}>Cancel</button>}
+        <button className="btn w-full" onClick={() => changestatus(next)}>Move to {STATUS_LABELS[next]}</button>
+        {o.status === 'placed' && <button className="btn-danger w-full" onClick={() => changestatus('cancelled')}>Cancel</button>}
       </>
     )
   }
 
   return (
     <div>
-      <button className="link text-sm mb-4 cursor-pointer" onClick={() => navigate(-1)}>&larr; Back</button>
+      <button className="link text-sm mb-4 cursor-pointer inline-flex items-center gap-1" onClick={() => navigate(-1)}><Icon name="back" className="w-3 h-3" />Back</button>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2 card p-4">
           <h1 className="text-2xl font-bold flex items-center gap-3">Order {o.id} <StatusPill status={o.status} /></h1>

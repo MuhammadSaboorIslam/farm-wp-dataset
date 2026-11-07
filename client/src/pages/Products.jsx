@@ -2,7 +2,7 @@ import {useEffect,useState} from 'react'
 import {useDispatch,useSelector} from 'react-redux';
 import {loadProducts,setFilters,resetFilters,CATEGORIES} from '../redux/products'
 import ProductCard from '../components/ProductCard';
-import {Loader,ErrorMsg} from '../components/Bits'
+import {Loader,ErrorMsg,Icon} from '../components/Bits'
 
 function Products(){
   const dispatch = useDispatch()
@@ -76,28 +76,32 @@ function Products(){
   const TITLE = 'Fresh food, straight from the farm'.split(' ')
   const words = []
   for (let i = 0; i < TITLE.length; i++){
-    words.push(<span key={i} className="rise mr-[0.3em]" style={{ animationDelay: (i * 0.1) + 's' }}>{TITLE[i]}</span>)
+    words.push(<span key={i} className="rise inline-block mr-[0.3em]" style={{ animationDelay: (i * 0.1) + 's' }}>{TITLE[i]}</span>)
   }
 
   return (
       <div>
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-800 via-green-700 to-green-500 text-white p-8 md:p-14 mb-6 text-center">
-        <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-white/20 blur-3xl"></div>
-        <div className="absolute -bottom-24 -left-10 w-80 h-80 rounded-full bg-lime-300/20 blur-3xl"></div>
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white/15 to-transparent"></div>
-        <h1 className="relative text-3xl md:text-5xl font-extrabold tracking-tight">{words}</h1>
-        <p className="relative text-green-100 mt-3 rise" style={{ animationDelay: '0.6s' }}>Buy directly from farmers near you. No middlemen, picked the day before delivery.</p>
-        <form className='relative flex gap-2 max-w-xl mx-auto mt-6 bg-white rounded-lg p-1.5 shadow-lg rise' style={{ animationDelay: '0.8s' }} onSubmit={search}>
-          <input
-            type="text"
-            className="flex-1 px-3 py-2 text-gray-800 focus:outline-none"
-            placeholder="Search products..."
-            value={text}
-             onChange={e => setText(e.target.value)}
-          />
-         {text && <button type="button" className="text-gray-400 hover:text-gray-600 px-2 cursor-pointer" onClick={clearsearch}>Clear</button>}
-          <button type="submit" className="btn">Search</button>
-        </form>
+      <div className="hero">
+        <div className="absolute inset-0 pattern"></div>
+        <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-white/20 blur-3xl"></div>
+        <div className="absolute -bottom-24 -left-10 w-96 h-96 rounded-full bg-lime-300/20 blur-3xl"></div>
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/15 to-transparent"></div>
+        <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24 text-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">{words}</h1>
+          <p className="text-green-100 text-lg mt-4 rise" style={{ animationDelay: '0.6s' }}>Buy directly from farmers near you. No middlemen, picked the day before delivery.</p>
+          <form className='searchbar rise' style={{ animationDelay: '0.8s' }} onSubmit={search}>
+            <Icon name="search" className="w-5 h-5 ml-2" />
+            <input
+              type="text"
+              className="searchinput"
+              placeholder="Search products..."
+              value={text}
+               onChange={e => setText(e.target.value)}
+            />
+           {text && <button type="button" className="text-gray-400 hover:text-gray-600 px-2 cursor-pointer" onClick={clearsearch}>Clear</button>}
+            <button type="submit" className="btn rounded-full px-6">Search</button>
+          </form>
+        </div>
       </div>
 
       <div className="card p-4 mb-6 grid grid-cols-2 md:grid-cols-5 gap-3 items-end">

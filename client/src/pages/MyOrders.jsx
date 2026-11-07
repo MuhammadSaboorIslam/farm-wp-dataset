@@ -56,7 +56,7 @@ function MyOrders(){
       </div>
       {loading && <Loader />}
       {error && <ErrorMsg message={error} />}
-      {!loading && list.length === 0 && <p className="empty">You have not ordered anything yet. <Link to="/" className="link">Browse products</Link></p>}
+      {!loading && list.length == 0 && <p className="empty">You have not ordered anything yet. <Link to="/" className="link">Browse products</Link></p>}
       {!loading && list.length > 0 && shown.length === 0 && <p className="empty">Nothing here.</p>}
       {!loading && <ul className="flex flex-col gap-3">{rows}</ul>}
     </div>

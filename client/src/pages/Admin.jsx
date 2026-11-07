@@ -17,7 +17,7 @@ function Admin(){
     dispatch(loadAllOrders())
   }, [dispatch])
 
-  async function decide(f, approve){
+  async function Decide(f, approve){
     if (!approve && !window.confirm('Reject ' + f.farmName + '?')){
       return
     }
@@ -38,8 +38,8 @@ function Admin(){
           <p className="muted">{f.bio}</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="btn btn-sm" onClick={() => decide(f, true)}>Verify</button>
-          <button className="btn-danger btn-sm" onClick={() => decide(f, false)}>Reject</button>
+          <button className="btn btn-sm" onClick={() => Decide(f, true)}>Verify</button>
+          <button className="btn-danger btn-sm" onClick={() => Decide(f, false)}>Reject</button>
         </div>
       </li>
     )
@@ -94,7 +94,7 @@ function Admin(){
 
       {tab === 'pending' && !loading && (
         <div>
-          {pendingRows.length === 0 && <p className="empty">No farms waiting for verification.</p>}
+          {pendingRows.length == 0 && <p className="empty">No farms waiting for verification.</p>}
           <ul className="flex flex-col gap-3">{pendingRows}</ul>
         </div>
       )}
