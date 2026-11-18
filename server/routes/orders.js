@@ -1,0 +1,18 @@
+const express = require('express')
+const c = require('../controllers/orderController')
+const { auth, allow } = require('../middleware')
+
+const router = express.Router()
+
+router.post('/', auth, allow('customer'), c.placeOrder)
+router.get('/mine', auth, c.myOrders)
+router.get('/available', auth, allow('rider'), c.availableOrders)
+router.get('/stats', auth, allow('farmer'), c.farmerStats)
+router.get('/rider-stats', auth, allow('rider'), c.riderStats)
+router.post('/:id/receipt-link', auth, c.receiptLink)
+router.get('/:id/receipt', c.receipt)
+router.get('/:id', auth, c.getOrder)
+router.post('/:id/claim', auth, allow('rider'), c.claimOrder)
+router.patch('/:id/status', auth, c.changeStatus)
+
+module.exports = router
