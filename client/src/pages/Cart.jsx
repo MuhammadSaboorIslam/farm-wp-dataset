@@ -15,7 +15,7 @@ function Cart(){
   const [phone, setPhone] = useState(localStorage.getItem('phone') || '')
   const [formerror, setFormerror] = useState('')
 
-  useEffect(() => {
+  useEffect(()=>{
     return () => { dispatch(clearPlaced()) }
   }, [dispatch])
 

@@ -17,11 +17,11 @@ const notificationsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loadNotifications.fulfilled, (state, action) => {
+    builder.addCase(loadNotifications.fulfilled,(state, action)=>{
       state.list = action.payload.notifications
       state.unread = action.payload.unread
     })
-    builder.addCase(markAllRead.fulfilled, (state) => {
+    builder.addCase(markAllRead.fulfilled,(state)=>{
       for (let i = 0; i < state.list.length; i++){
         state.list[i].read = true
       }

@@ -17,7 +17,7 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState(false)
 
-  useEffect(() => {
+  useEffect(()=>{
     if (user){
       dispatch(loadNotifications())
     } else {

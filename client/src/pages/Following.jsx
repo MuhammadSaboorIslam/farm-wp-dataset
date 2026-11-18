@@ -9,7 +9,7 @@ function Following(){
   const dispatch = useDispatch()
   const { following, loading, error } = useSelector(state => state.farms)
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(loadFollowing())
   }, [dispatch])
 

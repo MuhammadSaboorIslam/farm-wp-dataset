@@ -13,7 +13,7 @@ function Farm(){
   const { current, loading, error } = useSelector(state => state.farms)
   const user = useSelector(state => state.auth.user)
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(loadFarm(id))
   }, [dispatch, id])
 

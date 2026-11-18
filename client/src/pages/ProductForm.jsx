@@ -114,7 +114,7 @@ function ProductForm(){
   const dispatch = useDispatch()
   const { mine, mineLoading } = useSelector(state => state.products)
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(clearSaveError())
     if (id && mine.length === 0){
       dispatch(loadMyProducts())

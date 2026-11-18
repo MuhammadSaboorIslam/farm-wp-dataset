@@ -21,20 +21,20 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(logoutUser, () => initialState)
-    builder.addCase(loadPendingFarmers.pending, (state) => {
+    builder.addCase(loadPendingFarmers.pending,(state)=>{
       state.loading = true
       state.error = null
     })
-    builder.addCase(loadPendingFarmers.fulfilled, (state, action) => {
+    builder.addCase(loadPendingFarmers.fulfilled,(state, action)=>{
       state.loading = false
       state.pending = action.payload.farmers
     })
-    builder.addCase(loadPendingFarmers.rejected, (state, action) => {
+    builder.addCase(loadPendingFarmers.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(verifyFarmer.fulfilled, (state, action) => {
+    builder.addCase(verifyFarmer.fulfilled,(state, action)=>{
       const keep = []
       for (let i = 0; i < state.pending.length; i++){
         if (state.pending[i].id !== action.payload.farmer.id) keep.push(state.pending[i])
@@ -47,28 +47,28 @@ const adminSlice = createSlice({
       }
     })
 
-    builder.addCase(loadUsers.pending, (state) => {
+    builder.addCase(loadUsers.pending,(state)=>{
       state.loading = true
       state.error = null
     })
-    builder.addCase(loadUsers.fulfilled, (state, action) => {
+    builder.addCase(loadUsers.fulfilled,(state, action)=>{
       state.loading = false
       state.users = action.payload.users
     })
-    builder.addCase(loadUsers.rejected, (state, action) => {
+    builder.addCase(loadUsers.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(loadAllOrders.pending, (state) => {
+    builder.addCase(loadAllOrders.pending,(state)=>{
       state.loading = true
       state.error = null
     })
-    builder.addCase(loadAllOrders.fulfilled, (state, action) => {
+    builder.addCase(loadAllOrders.fulfilled,(state, action)=>{
       state.loading = false
       state.orders = action.payload.orders
     })
-    builder.addCase(loadAllOrders.rejected, (state, action) => {
+    builder.addCase(loadAllOrders.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })

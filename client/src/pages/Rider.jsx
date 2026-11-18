@@ -11,7 +11,7 @@ function Rider(){
   const { available, list, loading, error } = useSelector(state => state.orders)
   const [tab, setTab] = useState('available')
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(loadAvailable())
     dispatch(loadMyOrders())
   }, [dispatch])

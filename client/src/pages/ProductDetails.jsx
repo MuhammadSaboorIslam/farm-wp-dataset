@@ -22,11 +22,11 @@ function ProductDetails(){
     const [orderId, setOrderId] = useState('')
     const [formerror, setFormerror] = useState('')
 
-    useEffect(() => {
+    useEffect(()=>{
         dispatch(loadProduct(id))
     },[dispatch,id])
 
-    useEffect(() => {
+    useEffect(()=>{
         if (user && user.role === 'customer'){
             dispatch(loadMyOrders())
         }

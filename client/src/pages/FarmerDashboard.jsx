@@ -20,7 +20,7 @@ function FarmerDashboard(){
   const [images, setImages] = useState([])
   const [formerror, setFormerror] = useState('')
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(loadMyProducts())
     dispatch(loadMyOrders())
     dispatch(loadMyUpdates())

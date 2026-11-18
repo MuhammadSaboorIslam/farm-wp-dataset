@@ -15,7 +15,7 @@ function OrderDetails(){
   const { current: o, loading, error } = useSelector(state => state.orders)
   const user = useSelector(state => state.auth.user)
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(loadOrder(id))
   }, [dispatch, id])
 

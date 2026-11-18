@@ -28,61 +28,61 @@ const farmsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(logoutUser, () => initialState)
-    builder.addCase(loadFarm.pending, (state) => {
+    builder.addCase(loadFarm.pending,(state)=>{
       state.loading = true
       state.error = null
       state.current = null
     })
-    builder.addCase(loadFarm.fulfilled, (state, action) => {
+    builder.addCase(loadFarm.fulfilled,(state, action)=>{
       state.loading = false
       state.current = action.payload
     })
-    builder.addCase(loadFarm.rejected, (state, action) => {
+    builder.addCase(loadFarm.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(toggleFollow.fulfilled, (state, action) => {
+    builder.addCase(toggleFollow.fulfilled,(state, action)=>{
       if (state.current){
         state.current.following = action.payload.following
         state.current.followers = action.payload.followers
       }
     })
 
-    builder.addCase(loadFollowing.pending, (state) => {
+    builder.addCase(loadFollowing.pending,(state)=>{
       state.loading = true
       state.error = null
     })
-    builder.addCase(loadFollowing.fulfilled, (state, action) => {
+    builder.addCase(loadFollowing.fulfilled,(state, action)=>{
       state.loading = false
       state.following = action.payload.farms
     })
-    builder.addCase(loadFollowing.rejected, (state, action) => {
+    builder.addCase(loadFollowing.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(loadMyUpdates.pending, (state) => {
+    builder.addCase(loadMyUpdates.pending,(state)=>{
       state.loading = true
     })
-    builder.addCase(loadMyUpdates.fulfilled, (state, action) => {
+    builder.addCase(loadMyUpdates.fulfilled,(state, action)=>{
       state.loading = false
       state.myUpdates = action.payload.updates
     })
-    builder.addCase(loadMyUpdates.rejected, (state, action) => {
+    builder.addCase(loadMyUpdates.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(postUpdate.pending, (state) => {
+    builder.addCase(postUpdate.pending,(state)=>{
       state.saving = true
       state.saveError = null
     })
-    builder.addCase(postUpdate.fulfilled, (state, action) => {
+    builder.addCase(postUpdate.fulfilled,(state, action)=>{
       state.saving = false
       state.myUpdates.unshift(action.payload.update)
     })
-    builder.addCase(postUpdate.rejected, (state, action) => {
+    builder.addCase(postUpdate.rejected,(state, action)=>{
       state.saving = false
       state.saveError = action.error.message
     })

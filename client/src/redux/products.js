@@ -59,70 +59,70 @@ const productsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(logoutUser, (state) => {
+    builder.addCase(logoutUser,(state)=>{
       state.mine = []
       state.saveError = null
     })
-    builder.addCase(loadProducts.pending, (state) => {
+    builder.addCase(loadProducts.pending,(state)=>{
       state.loading = true
       state.error = null
     })
-    builder.addCase(loadProducts.fulfilled, (state, action) => {
+    builder.addCase(loadProducts.fulfilled,(state, action)=>{
       state.loading = false
       state.list = action.payload.products
       state.page = action.payload.page
     })
-    builder.addCase(loadProducts.rejected, (state, action) => {
+    builder.addCase(loadProducts.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(loadProduct.pending, (state) => {
+    builder.addCase(loadProduct.pending,(state)=>{
       state.loading = true
       state.error = null
       state.current = null
       state.reviews = []
     })
-    builder.addCase(loadProduct.fulfilled, (state, action) => {
+    builder.addCase(loadProduct.fulfilled,(state, action)=>{
       state.loading = false
       state.current = action.payload.product
       state.reviews = action.payload.reviews
     })
-    builder.addCase(loadProduct.rejected, (state, action) => {
+    builder.addCase(loadProduct.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(loadMyProducts.pending, (state) => {
+    builder.addCase(loadMyProducts.pending,(state)=>{
       state.mineLoading = true
     })
-    builder.addCase(loadMyProducts.fulfilled, (state, action) => {
+    builder.addCase(loadMyProducts.fulfilled,(state, action)=>{
       state.mineLoading = false
       state.mine = action.payload.products
     })
-    builder.addCase(loadMyProducts.rejected, (state, action) => {
+    builder.addCase(loadMyProducts.rejected,(state, action)=>{
       state.mineLoading = false
       state.error = action.error.message
     })
 
-    builder.addCase(createProduct.pending, (state) => {
+    builder.addCase(createProduct.pending,(state)=>{
       state.saving = true
       state.saveError = null
     })
-    builder.addCase(createProduct.fulfilled, (state, action) => {
+    builder.addCase(createProduct.fulfilled,(state, action)=>{
       state.saving = false
       state.mine.unshift(action.payload.product)
     })
-    builder.addCase(createProduct.rejected, (state, action) => {
+    builder.addCase(createProduct.rejected,(state, action)=>{
       state.saving = false
       state.saveError = action.error.message
     })
 
-    builder.addCase(updateProduct.pending, (state) => {
+    builder.addCase(updateProduct.pending,(state)=>{
       state.saving = true
       state.saveError = null
     })
-    builder.addCase(updateProduct.fulfilled, (state, action) => {
+    builder.addCase(updateProduct.fulfilled,(state, action)=>{
       state.saving = false
       for (let i = 0; i < state.mine.length; i++){
         if (state.mine[i].id === action.payload.product.id){
@@ -130,12 +130,12 @@ const productsSlice = createSlice({
         }
       }
     })
-    builder.addCase(updateProduct.rejected, (state, action) => {
+    builder.addCase(updateProduct.rejected,(state, action)=>{
       state.saving = false
       state.saveError = action.error.message
     })
 
-    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+    builder.addCase(deleteProduct.fulfilled,(state, action)=>{
       const keep = []
       for (let i = 0; i < state.mine.length; i++){
         if (state.mine[i].id != action.payload) keep.push(state.mine[i])
@@ -143,7 +143,7 @@ const productsSlice = createSlice({
       state.mine = keep
     })
 
-    builder.addCase(addReview.fulfilled, (state, action) => {
+    builder.addCase(addReview.fulfilled,(state, action)=>{
       state.reviews.unshift(action.payload.review)
       if (state.current){
         const n = state.current.reviewCount + 1

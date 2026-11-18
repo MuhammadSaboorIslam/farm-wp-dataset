@@ -55,47 +55,47 @@ const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(logoutUser, () => initialState)
-    builder.addCase(placeOrder.pending, (state) => {
+    builder.addCase(placeOrder.pending,(state)=>{
       state.placing = true
       state.placeError = null
     })
-    builder.addCase(placeOrder.fulfilled, (state, action) => {
+    builder.addCase(placeOrder.fulfilled,(state, action)=>{
       state.placing = false
       state.placed = action.payload.orders
     })
-    builder.addCase(placeOrder.rejected, (state, action) => {
+    builder.addCase(placeOrder.rejected,(state, action)=>{
       state.placing = false
       state.placeError = action.error.message
     })
 
-    builder.addCase(loadMyOrders.pending, (state) => {
+    builder.addCase(loadMyOrders.pending,(state)=>{
       state.loading = true
       state.error = null
     })
-    builder.addCase(loadMyOrders.fulfilled, (state, action) => {
+    builder.addCase(loadMyOrders.fulfilled,(state, action)=>{
       state.loading = false
       state.list = action.payload.orders
     })
-    builder.addCase(loadMyOrders.rejected, (state, action) => {
+    builder.addCase(loadMyOrders.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(loadOrder.pending, (state) => {
+    builder.addCase(loadOrder.pending,(state)=>{
       state.loading = true
       state.error = null
       state.current = null
     })
-    builder.addCase(loadOrder.fulfilled, (state, action) => {
+    builder.addCase(loadOrder.fulfilled,(state, action)=>{
       state.loading = false
       state.current = action.payload.order
     })
-    builder.addCase(loadOrder.rejected, (state, action) => {
+    builder.addCase(loadOrder.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(setOrderStatus.fulfilled, (state, action) => {
+    builder.addCase(setOrderStatus.fulfilled,(state, action)=>{
       const o = action.payload.order
       replaceIn(state.list, o)
       state.available = withoutOrder(state.available, o.id)
@@ -103,29 +103,29 @@ const ordersSlice = createSlice({
         state.current = o
       }
     })
-    builder.addCase(setOrderStatus.rejected, (state, action) => {
+    builder.addCase(setOrderStatus.rejected,(state, action)=>{
       state.error = action.error.message
     })
 
-    builder.addCase(loadAvailable.pending, (state) => {
+    builder.addCase(loadAvailable.pending,(state)=>{
       state.loading = true
       state.error = null
     })
-    builder.addCase(loadAvailable.fulfilled, (state, action) => {
+    builder.addCase(loadAvailable.fulfilled,(state, action)=>{
       state.loading = false
       state.available = action.payload.orders
     })
-    builder.addCase(loadAvailable.rejected, (state, action) => {
+    builder.addCase(loadAvailable.rejected,(state, action)=>{
       state.loading = false
       state.error = action.error.message
     })
 
-    builder.addCase(claimOrder.fulfilled, (state, action) => {
+    builder.addCase(claimOrder.fulfilled,(state, action)=>{
       const o = action.payload.order
       state.available = withoutOrder(state.available, o.id)
       state.list.unshift(o)
     })
-    builder.addCase(claimOrder.rejected, (state, action) => {
+    builder.addCase(claimOrder.rejected,(state, action)=>{
       state.error = action.error.message
     })
   },

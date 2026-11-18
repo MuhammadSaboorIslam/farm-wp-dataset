@@ -5,15 +5,21 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "demo": "npm --prefix ../client run build && node index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "compression": "^1.8.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
+    "ejs": "^7.0.2",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.7.5",
+    "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",
+    "sanitize-html": "^2.18.2",
     "socket.io": "^4.8.4"
   }
 }

@@ -59,7 +59,7 @@ const cartSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(logoutUser, (state) => {
+    builder.addCase(logoutUser,(state)=>{
       state.items = []
       save(state.items)
     })

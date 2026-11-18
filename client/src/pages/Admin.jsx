@@ -11,7 +11,7 @@ function Admin(){
   const { pending, users, orders, loading, error } = useSelector(state => state.admin)
   const [tab, setTab] = useState('pending')
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(loadPendingFarmers())
     dispatch(loadUsers())
     dispatch(loadAllOrders())

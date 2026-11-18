@@ -10,7 +10,7 @@ function MyOrders(){
   const { list, loading, error } = useSelector(state => state.orders)
   const [tab, setTab] = useState('active')
 
-  useEffect(() => {
+  useEffect(()=>{
     dispatch(loadMyOrders())
   }, [dispatch])
 
