@@ -1,5 +1,5 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
-import {get,patch} from '../api'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { get, patch } from '../api'
 
 export const loadNotifications = createAsyncThunk('notifications/load', () => get('/notifications'))
 export const markAllRead = createAsyncThunk('notifications/read', () => patch('/notifications/read'))
@@ -11,7 +11,7 @@ const notificationsSlice = createSlice({
     unread: 0,
   },
   reducers: {
-    clearNotifications(state){
+    clearNotifications(state) {
       state.list = []
       state.unread = 0
     },
@@ -22,7 +22,7 @@ const notificationsSlice = createSlice({
       state.unread = action.payload.unread
     })
     builder.addCase(markAllRead.fulfilled,(state)=>{
-      for (let i = 0; i < state.list.length; i++){
+      for (let i = 0; i < state.list.length; i++) {
         state.list[i].read = true
       }
       state.unread = 0
