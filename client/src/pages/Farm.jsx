@@ -1,17 +1,17 @@
-import {useEffect} from 'react'
-import {useParams} from 'react-router-dom'
-import {useDispatch,useSelector} from 'react-redux'
-import {loadFarm,toggleFollow} from '../redux/farms'
-import {flash} from '../redux/ui'
-import {ShortDate} from '../helpers'
+import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { loadFarm, toggleFollow } from '../redux/farms'
+import { flash } from '../redux/ui'
+import { ShortDate } from '../helpers'
 import ProductCard from '../components/ProductCard'
-import {Loader,ErrorMsg,Img,Stars} from '../components/Bits'
+import { Loader, ErrorMsg, Img, Stars } from '../components/Bits'
 
-function Farm(){
+function Farm() {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const { current, loading, error } = useSelector(state => state.farms)
-  const user = useSelector(state => state.auth.user)
+  const { current, loading, error } = useSelector((state) => state.farms)
+  const user = useSelector((state) => state.auth.user)
 
   useEffect(()=>{
     dispatch(loadFarm(id))
@@ -23,20 +23,24 @@ function Farm(){
 
   const farm = current.farm
 
-  async function FollowFarm(){
+  async function FollowFarm() {
     const result = await dispatch(toggleFollow({ id: farm.id, following: current.following }))
-    if (!result.error){
-      flash(dispatch, 'ok', current.following ? 'Unfollowed ' + farm.farmName : 'You now follow ' + farm.farmName)
+    if (!result.error) {
+      flash(
+        dispatch,
+        'ok',
+        current.following ? 'Unfollowed ' + farm.farmName : 'You now follow ' + farm.farmName,
+      )
     }
   }
 
   const cards = []
-  for (let i = 0; i < current.products.length; i++){
+  for (let i = 0; i < current.products.length; i++) {
     cards.push(<ProductCard key={current.products[i].id} product={current.products[i]} />)
   }
 
   const feed = []
-  for (let i = 0; i < current.updates.length; i++){
+  for (let i = 0; i < current.updates.length; i++) {
     const u = current.updates[i]
     feed.push(
       <li key={u.id} className="card p-4">
@@ -44,7 +48,7 @@ function Farm(){
         <p className="muted">{ShortDate(u.createdAt)}</p>
         <p className="mt-1">{u.body}</p>
         {u.images.length > 0 && <Img src={u.images[0]} alt={u.title} className="w-full h-48 rounded mt-3" />}
-      </li>
+      </li>,
     )
   }
 
@@ -53,10 +57,20 @@ function Farm(){
       <div className="card p-6 flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
         <div>
           <h1 className="text-3xl font-bold">{farm.farmName}</h1>
-          <p className="muted">{farm.name} &middot; {farm.location}</p>
+          <p className="muted">
+            {farm.name} &middot; {farm.location}
+          </p>
           <Stars rating={current.rating} count={current.reviewCount} />
           <p className="mt-2">{farm.bio}</p>
-          <p className="muted mt-2">{current.followers} followers &middot; {current.products.length} products</p>
+          {farm.crops && (
+            <p className="mt-1 text-sm">
+              <b>Grows:</b> {farm.crops}
+            </p>
+          )}
+          <p className="muted mt-2">
+            {current.followers} followers &middot; {current.products.length} products
+            {farm.farmSize ? <> &middot; {farm.farmSize} acres</> : null}
+          </p>
         </div>
         {user && user.role === 'customer' && (
           <button className={current.following ? 'btn-ghost' : 'btn'} onClick={FollowFarm}>
