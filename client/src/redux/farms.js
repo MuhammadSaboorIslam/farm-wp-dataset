@@ -1,9 +1,11 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
-import {get,post,del} from '../api'
-import {logoutUser} from './auth'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { get, post, del } from '../api'
+import { logoutUser } from './auth'
 
 export const loadFarm = createAsyncThunk('farms/load', (id) => get('/farms/' + id))
-export const toggleFollow = createAsyncThunk('farms/follow', ({id, following}) => following ? del('/farms/' + id + '/follow') : post('/farms/' + id + '/follow'))
+export const toggleFollow = createAsyncThunk('farms/follow', ({ id, following }) =>
+  following ? del('/farms/' + id + '/follow') : post('/farms/' + id + '/follow'),
+)
 export const loadFollowing = createAsyncThunk('farms/following', () => get('/farms/following'))
 export const loadMyUpdates = createAsyncThunk('farms/myUpdates', () => get('/updates?farmer=me'))
 export const postUpdate = createAsyncThunk('farms/postUpdate', (form) => post('/updates', form))
@@ -22,7 +24,7 @@ const farmsSlice = createSlice({
   name: 'farms',
   initialState,
   reducers: {
-    clearSaveError(state){
+    clearSaveError(state) {
       state.saveError = null
     },
   },
@@ -43,7 +45,7 @@ const farmsSlice = createSlice({
     })
 
     builder.addCase(toggleFollow.fulfilled,(state, action)=>{
-      if (state.current){
+      if (state.current) {
         state.current.following = action.payload.following
         state.current.followers = action.payload.followers
       }

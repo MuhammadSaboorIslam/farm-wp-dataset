@@ -1,7 +1,7 @@
-import {createSlice} from '@reduxjs/toolkit'
-import {logoutUser} from './auth'
+import { createSlice } from '@reduxjs/toolkit'
+import { logoutUser } from './auth'
 
-function save(items){
+function save(items) {
   localStorage.setItem('cart', JSON.stringify(items))
 }
 
@@ -11,15 +11,15 @@ const cartSlice = createSlice({
     items: JSON.parse(localStorage.getItem('cart')) || [],
   },
   reducers: {
-    addToCart(state, action){
+    addToCart(state, action) {
       const { product, qty } = action.payload
       let found = null
-      for (let i = 0; i < state.items.length; i++){
-        if (state.items[i].product === product.id){
+      for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].product === product.id) {
           found = state.items[i]
         }
       }
-      if (found){
+      if (found) {
         found.qty = Math.min(found.qty + qty, product.quantity)
       } else {
         state.items.push({
@@ -36,24 +36,24 @@ const cartSlice = createSlice({
       }
       save(state.items)
     },
-    setQty(state, action){
+    setQty(state, action) {
       const { product, qty } = action.payload
-      for (let i = 0; i < state.items.length; i++){
-        if (state.items[i].product === product){
+      for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].product === product) {
           state.items[i].qty = Math.max(1, Math.min(qty, state.items[i].max))
         }
       }
       save(state.items)
     },
-    removeFromCart(state, action){
+    removeFromCart(state, action) {
       const keep = []
-      for (let i = 0; i < state.items.length; i++){
+      for (let i = 0; i < state.items.length; i++) {
         if (state.items[i].product !== action.payload) keep.push(state.items[i])
       }
       state.items = keep
       save(state.items)
     },
-    clearCart(state){
+    clearCart(state) {
       state.items = []
       save(state.items)
     },
@@ -68,9 +68,9 @@ const cartSlice = createSlice({
 
 export const { addToCart, setQty, removeFromCart, clearCart } = cartSlice.actions
 
-export function cartCount(state){
+export function cartCount(state) {
   let n = 0
-  for (let i = 0; i < state.cart.items.length; i++){
+  for (let i = 0; i < state.cart.items.length; i++) {
     n += state.cart.items[i].qty
   }
   return n

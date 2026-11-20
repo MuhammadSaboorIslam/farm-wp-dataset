@@ -1,6 +1,6 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
-import {get,post,patch} from '../api'
-import {logoutUser} from './auth'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { get, post, patch } from '../api'
+import { logoutUser } from './auth'
 
 export const STATUS_LABELS = {
   placed: 'Placed',
@@ -13,21 +13,23 @@ export const STATUS_LABELS = {
 export const placeOrder = createAsyncThunk('orders/place', (form) => post('/orders', form))
 export const loadMyOrders = createAsyncThunk('orders/mine', () => get('/orders/mine'))
 export const loadOrder = createAsyncThunk('orders/one', (id) => get('/orders/' + id))
-export const setOrderStatus = createAsyncThunk('orders/status', ({id, status}) => patch('/orders/' + id + '/status', { status: status }))
+export const setOrderStatus = createAsyncThunk('orders/status', ({ id, status }) =>
+  patch('/orders/' + id + '/status', { status: status }),
+)
 export const loadAvailable = createAsyncThunk('orders/available', () => get('/orders/available'))
 export const claimOrder = createAsyncThunk('orders/claim', (id) => post('/orders/' + id + '/claim'))
 
-function withoutOrder(list, id){
+function removeorder(list, id) {
   const keep = []
-  for (let i = 0; i < list.length; i++){
+  for (let i = 0; i < list.length; i++) {
     if (list[i].id != id) keep.push(list[i])
   }
   return keep
 }
 
-function replaceIn(list, order){
-  for (let i = 0; i < list.length; i++){
-    if (list[i].id === order.id){
+function replacein(list, order) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].id === order.id) {
       list[i] = order
     }
   }
@@ -48,7 +50,7 @@ const ordersSlice = createSlice({
   name: 'orders',
   initialState,
   reducers: {
-    clearPlaced(state){
+    clearPlaced(state) {
       state.placed = null
       state.placeError = null
     },
@@ -97,9 +99,9 @@ const ordersSlice = createSlice({
 
     builder.addCase(setOrderStatus.fulfilled,(state, action)=>{
       const o = action.payload.order
-      replaceIn(state.list, o)
-      state.available = withoutOrder(state.available, o.id)
-      if (state.current && state.current.id === o.id){
+      replacein(state.list, o)
+      state.available = removeorder(state.available, o.id)
+      if (state.current && state.current.id === o.id) {
         state.current = o
       }
     })
@@ -122,7 +124,7 @@ const ordersSlice = createSlice({
 
     builder.addCase(claimOrder.fulfilled,(state, action)=>{
       const o = action.payload.order
-      state.available = withoutOrder(state.available, o.id)
+      state.available = removeorder(state.available, o.id)
       state.list.unshift(o)
     })
     builder.addCase(claimOrder.rejected,(state, action)=>{

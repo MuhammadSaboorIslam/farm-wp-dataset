@@ -1,8 +1,16 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
-import {get,post,put,del,toQuery} from '../api'
-import {logoutUser} from './auth'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { get, post, put, del, toquery } from '../api'
+import { logoutUser } from './auth'
 
-export const CATEGORIES = ['Vegetables', 'Fruits', 'Dairy & Eggs', 'Grains', 'Honey', 'Herbs', 'Meat & Poultry']
+export const CATEGORIES = [
+  'Vegetables',
+  'Fruits',
+  'Dairy & Eggs',
+  'Grains',
+  'Honey',
+  'Herbs',
+  'Meat & Poultry',
+]
 export const UNITS = ['kg', 'dozen', 'litre', 'bunch', 'piece']
 
 export const defaultFilters = {
@@ -15,11 +23,15 @@ export const defaultFilters = {
   page: 0,
 }
 
-export const loadProducts = createAsyncThunk('products/load', (filters) => get('/products' + toQuery(filters)))
+export const loadProducts = createAsyncThunk('products/load', (filters) =>
+  get('/products' + toquery(filters)),
+)
 export const loadProduct = createAsyncThunk('products/loadOne', (id) => get('/products/' + id))
 export const loadMyProducts = createAsyncThunk('products/loadMine', () => get('/products?farmer=me&size=100'))
 export const createProduct = createAsyncThunk('products/create', (form) => post('/products', form))
-export const updateProduct = createAsyncThunk('products/update', ({id, form}) => put('/products/' + id, form))
+export const updateProduct = createAsyncThunk('products/update', ({ id, form }) =>
+  put('/products/' + id, form),
+)
 export const deleteProduct = createAsyncThunk('products/delete', async (id) => {
   await del('/products/' + id)
   return id
@@ -44,17 +56,17 @@ const productsSlice = createSlice({
     saveError: null,
   },
   reducers: {
-    setFilters(state, action){
+    setFilters(state, action) {
       const changes = action.payload
       state.filters = { ...state.filters, ...changes }
-      if (!('page' in changes)){
+      if (!('page' in changes)) {
         state.filters.page = 0
       }
     },
-    resetFilters(state){
+    resetFilters(state) {
       state.filters = { ...defaultFilters }
     },
-    clearSaveError(state){
+    clearSaveError(state) {
       state.saveError = null
     },
   },
@@ -124,8 +136,8 @@ const productsSlice = createSlice({
     })
     builder.addCase(updateProduct.fulfilled,(state, action)=>{
       state.saving = false
-      for (let i = 0; i < state.mine.length; i++){
-        if (state.mine[i].id === action.payload.product.id){
+      for (let i = 0; i < state.mine.length; i++) {
+        if (state.mine[i].id === action.payload.product.id) {
           state.mine[i] = action.payload.product
         }
       }
@@ -137,7 +149,7 @@ const productsSlice = createSlice({
 
     builder.addCase(deleteProduct.fulfilled,(state, action)=>{
       const keep = []
-      for (let i = 0; i < state.mine.length; i++){
+      for (let i = 0; i < state.mine.length; i++) {
         if (state.mine[i].id != action.payload) keep.push(state.mine[i])
       }
       state.mine = keep
@@ -145,9 +157,12 @@ const productsSlice = createSlice({
 
     builder.addCase(addReview.fulfilled,(state, action)=>{
       state.reviews.unshift(action.payload.review)
-      if (state.current){
+      if (state.current) {
         const n = state.current.reviewCount + 1
-        state.current.rating = Math.round((state.current.rating * state.current.reviewCount + action.payload.review.rating) / n * 10) / 10
+        state.current.rating =
+          Math.round(
+            ((state.current.rating * state.current.reviewCount + action.payload.review.rating) / n) * 10,
+          ) / 10
         state.current.reviewCount = n
       }
     })
