@@ -1,0 +1,10 @@
+<%- include('head', { heading: 'Welcome to FarmDirect, ' + d.name + '!' }) %>
+<% if (d.role === 'farmer') { %>
+<p style="margin:0 0 12px;line-height:1.5">Your farm <b><%= d.farmName %></b> is waiting for an admin to verify it. We will email you as soon as it is approved, then you can start listing products.</p>
+<% } else if (d.role === 'rider') { %>
+<p style="margin:0 0 12px;line-height:1.5">You can now claim packed orders near you and deliver them for cash on delivery.</p>
+<% } else { %>
+<p style="margin:0 0 12px;line-height:1.5">Browse fresh produce from farms near you, follow the farms you like and pay cash when your order arrives.</p>
+<% } %>
+<%- include('button', { label: 'Open FarmDirect' }) %>
+<%- include('foot') %>

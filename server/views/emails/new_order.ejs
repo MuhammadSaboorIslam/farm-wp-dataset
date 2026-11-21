@@ -1,0 +1,7 @@
+<%- include('head', { heading: 'New order ' + d.id + ' from ' + d.customerName }) %>
+<p style="margin:0 0 12px;line-height:1.5">Hi <%= d.farmerName %>, you have a new order to pack.</p>
+<p style="margin:0 0 12px;line-height:1.5">Deliver to: <%= d.address %> &middot; <%= d.phone %></p>
+<%- include('items') %>
+<p style="font-size:16px;margin:0"><b>Total <%= money(d.total) %></b></p>
+<%- include('button', { label: 'Open your dashboard' }) %>
+<%- include('foot') %>

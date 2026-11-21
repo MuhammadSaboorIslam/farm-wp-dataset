@@ -1,0 +1,9 @@
+<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-size:14px;margin:16px 0">
+  <% for (let i = 0; i < d.items.length; i++) { %>
+  <tr>
+    <td style="padding:8px 0;border-bottom:1px solid #eee"><%= d.items[i].name %></td>
+    <td style="padding:8px 0;border-bottom:1px solid #eee;color:#666" align="center"><%= d.items[i].qty %> <%= d.items[i].unit %></td>
+    <td style="padding:8px 0;border-bottom:1px solid #eee" align="right"><%= money(d.items[i].price * d.items[i].qty) %></td>
+  </tr>
+  <% } %>
+</table>

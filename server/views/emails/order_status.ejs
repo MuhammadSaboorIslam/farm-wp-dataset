@@ -1,0 +1,5 @@
+<%- include('head', { heading: 'Your order ' + d.id + ' ' + d.statusLine }) %>
+<p style="margin:0 0 12px;line-height:1.5">Hi <%= d.name %>, your order from <b><%= d.farmName %></b> <%= d.statusLine %>.</p>
+<p style="margin:0 0 12px;line-height:1.5"><%= d.statusText %></p>
+<%- include('button', { label: 'View order' }) %>
+<%- include('foot') %>

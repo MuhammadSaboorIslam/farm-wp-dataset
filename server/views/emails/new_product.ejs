@@ -1,0 +1,11 @@
+<%- include('head', { heading: d.farmName + ' added ' + d.productName }) %>
+<p style="margin:0 0 12px;line-height:1.5">Hi <%= d.name %>, something new from a farm you follow.</p>
+<div style="border:1px solid #e5e7eb;padding:14px 16px;margin:8px 0 4px;border-radius:8px">
+  <p style="margin:0;font-weight:bold;font-size:16px"><%= d.productName %> <span style="color:#15803d"><%= money(d.price) %> / <%= d.unit %></span></p>
+  <% if (d.description) { %>
+  <p style="margin:6px 0 0;color:#4b5563;line-height:1.5"><%= d.description %></p>
+  <% } %>
+</div>
+<%- include('button', { label: 'See the product' }) %>
+<%- include('follow_note') %>
+<%- include('foot') %>

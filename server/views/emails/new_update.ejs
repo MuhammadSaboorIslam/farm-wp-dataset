@@ -1,0 +1,11 @@
+<%- include('head', { heading: d.farmName + ' posted an update' }) %>
+<p style="margin:0 0 12px;line-height:1.5">Hi <%= d.name %>, a farm you follow has news.</p>
+<div style="background:#f3faf5;border-left:4px solid #15803d;padding:14px 16px;margin:8px 0 4px;border-radius:6px">
+  <p style="margin:0 0 6px;font-weight:bold;font-size:16px"><%= d.title %></p>
+  <% if (d.body) { %>
+  <p style="margin:0;line-height:1.5;white-space:pre-line"><%= d.body %></p>
+  <% } %>
+</div>
+<%- include('button', { label: 'Visit the farm' }) %>
+<%- include('follow_note') %>
+<%- include('foot') %>
