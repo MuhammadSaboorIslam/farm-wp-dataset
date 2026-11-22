@@ -1,7 +1,8 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body {
   @apply bg-gray-50 text-gray-800;
+  overflow-x: clip;
 }
 
 @layer components {
@@ -45,22 +46,22 @@ body {
     @apply text-green-700 hover:underline;
   }
   .bar {
-    @apply sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm;
+    @apply sticky top-0 z-30 bg-green-800 text-white border-b border-green-900 shadow-md;
   }
   .navlink {
-    @apply px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-gray-50;
+    @apply px-3 py-2 rounded-lg text-sm font-medium text-green-100 hover:text-white hover:bg-white/10;
   }
   .navlink.active {
-    @apply bg-green-50 text-green-700;
+    @apply bg-white/15 text-white;
   }
   .badge {
-    @apply absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold min-w-4 h-4 px-1 rounded-full flex items-center justify-center;
+    @apply absolute -top-0.5 -right-0.5 bg-yellow-400 text-green-900 text-[10px] font-bold min-w-4 h-4 px-1 rounded-full flex items-center justify-center;
   }
   .avatar {
     @apply w-9 h-9 rounded-full bg-green-700 text-white font-bold flex items-center justify-center;
   }
   .dropdown {
-    @apply absolute left-0 md:left-auto md:right-0 top-full mt-2 w-80 max-w-[90vw] bg-white text-gray-800 rounded-xl shadow-xl border border-gray-100 z-30;
+    @apply absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white text-gray-800 rounded-xl shadow-xl border border-gray-100 z-40;
   }
   .hero {
     @apply relative left-1/2 -translate-x-1/2 w-screen -mt-6 mb-8 overflow-hidden bg-gradient-to-br from-green-800 via-green-700 to-green-500 text-white;
@@ -74,8 +75,14 @@ body {
 }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .rise {
   opacity: 0;
@@ -86,4 +93,66 @@ body {
   background-image: radial-gradient(white 1.5px, transparent 1.5px);
   background-size: 28px 28px;
   opacity: 0.12;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pop {
+  opacity: 0;
+  animation: pop 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.bob {
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.slide-in {
+  animation: slide-in 0.4s ease forwards;
+}
+
+.role-card {
+  @apply w-full flex items-center gap-4 bg-white border border-gray-200 rounded-xl p-4 text-left cursor-pointer transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:border-green-600 focus:outline-none focus:border-green-600;
+}
+
+.auth-split {
+  @apply relative left-1/2 -translate-x-1/2 w-screen -mt-6 -mb-6 grid md:grid-cols-2 md:items-start min-h-[calc(100vh-65px)];
+}
+.auth-art {
+  @apply hidden md:block overflow-hidden sticky top-[65px] h-[calc(100vh-65px)];
+}
+.auth-side {
+  background-color: #f3faf5;
+  background-image: url('/img/farm-pattern.svg');
+  background-size: 160px 160px;
+  @apply self-stretch;
+}
+.auth-card {
+  @apply bg-white rounded-2xl border border-gray-100 shadow-xl shadow-green-900/5 p-6 sm:p-8;
 }
