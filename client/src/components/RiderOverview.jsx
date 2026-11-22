@@ -23,7 +23,7 @@ function Delta({ now, prev, weeks }) {
   const up = change >= 0
   return (
     <p className={'text-xs mt-1 font-medium ' + (up ? 'text-green-700' : 'text-red-600')}>
-      <span aria-hidden="true">{up ? '▲' : '▼'}</span> {Math.abs(change)}%{' '}
+      <span>{up ? '▲' : '▼'}</span> {Math.abs(change)}%{' '}
       <span className="text-gray-500 font-normal">vs previous {weeks} weeks</span>
     </p>
   )
@@ -116,14 +116,13 @@ function RiderOverview({ onGoAvailable }) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2 mb-4" role="group" aria-label="Date range">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-sm text-gray-500 mr-1">Showing</span>
         {RANGES.map((r) => (
           <button
             key={r}
             type="button"
             onClick={() => pick(r)}
-            aria-pressed={weeks === r}
             className={
               'text-sm px-3 py-1.5 rounded-full border cursor-pointer ' +
               (weeks === r
@@ -191,13 +190,7 @@ function RiderOverview({ onGoAvailable }) {
                 weeks
               </li>
             </ul>
-            <div
-              className="h-64"
-              role="img"
-              aria-label={
-                'Weekly earnings for the last ' + data.weeks + ' weeks compared with the weeks before'
-              }
-            >
+            <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={chart} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
                   <defs>
@@ -275,11 +268,7 @@ function RiderOverview({ onGoAvailable }) {
                   <b className="text-gray-900">{busiest.join(' and ')}</b> {busiest.length > 1 ? 'are' : 'is'}{' '}
                   your busiest ({most})
                 </p>
-                <div
-                  className="h-40"
-                  role="img"
-                  aria-label={data.weekdays.map((d) => d.day + ' ' + d.deliveries).join(', ')}
-                >
+                <div className="h-40">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={data.weekdays} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
                       <XAxis dataKey="day" tick={AXIS} tickLine={false} axisLine={{ stroke: '#d1d5db' }} />

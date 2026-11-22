@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { post, put } from '../api'
+import { get, post, put } from '../api'
 
 export const registerUser = createAsyncThunk('auth/register', (form) => post('/auth/register', form))
 export const loginUser = createAsyncThunk('auth/login', (form) => post('/auth/login', form))
+export const loadMe = createAsyncThunk('auth/me', () => get('/auth/me'))
 export const updateProfile = createAsyncThunk('auth/updateProfile', (form) => put('/auth/me', form))
 export const changePassword = createAsyncThunk('auth/password', (form) => put('/auth/password', form))
 export const updateSettings = createAsyncThunk('auth/settings', (form) => put('/auth/settings', form))
@@ -11,7 +12,6 @@ function saveuser(state, payload) {
   state.loading = false
   state.user = payload.user
   localStorage.setItem('user', JSON.stringify(payload.user))
-  localStorage.setItem('token', payload.token)
 }
 
 const authSlice = createSlice({
@@ -26,7 +26,6 @@ const authSlice = createSlice({
       state.user = null
       state.error = null
       localStorage.removeItem('user')
-      localStorage.removeItem('token')
     },
     setUser(state, action) {
       state.user = action.payload
@@ -61,6 +60,10 @@ const authSlice = createSlice({
       state.error = action.error.message
     })
 
+    builder.addCase(loadMe.fulfilled,(state, action)=>{
+      state.user = action.payload.user
+      localStorage.setItem('user', JSON.stringify(action.payload.user))
+    })
     builder.addCase(updateSettings.fulfilled,(state, action)=>{
       state.user = action.payload.user
       localStorage.setItem('user', JSON.stringify(action.payload.user))

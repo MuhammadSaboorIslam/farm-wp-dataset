@@ -1,13 +1,4 @@
 const mongoose = require('mongoose')
-const { pointfor } = require('../cities')
-
-const pointSchema = new mongoose.Schema(
-  {
-    type: { type: String, enum: ['Point'], required: true },
-    coordinates: { type: [Number], required: true },
-  },
-  { _id: false },
-)
 
 const userSchema = new mongoose.Schema(
   {
@@ -41,19 +32,11 @@ const userSchema = new mongoose.Schema(
     blocked: { type: Boolean, default: false },
     emailFarmNews: { type: Boolean, default: true },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
-    coords: { type: pointSchema, default: undefined },
     resetTokenHash: { type: String, default: null },
     resetTokenExpires: { type: Date, default: null },
+    passwordChangedAt: { type: Date, default: null },
   },
   { timestamps: true },
 )
-
-userSchema.index({ coords: '2dsphere' }, { sparse: true })
-
-userSchema.pre('save', function () {
-  if (this.role === 'farmer' && (this.isNew || this.isModified('location'))) {
-    this.coords = pointfor(this.location) || undefined
-  }
-})
 
 module.exports = mongoose.model('User', userSchema)

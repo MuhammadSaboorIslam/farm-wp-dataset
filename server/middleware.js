@@ -2,17 +2,19 @@ const jwt = require('jsonwebtoken')
 const User = require('./models/User')
 
 async function finduser(req) {
-  let header = req.headers.authorization
-  if (!header) {
+  const token = req.cookies.token
+  if (!token) {
     return null
   }
-  const parts = header.split(' ')
-  if (parts.length < 2 || parts[0] !== 'Bearer') {
-    return null
-  }
-  const token = parts[1]
   const data = jwt.verify(token, process.env.JWT_SECRET)
-  return User.findById(data.id).select('-password')
+  const user = await User.findById(data.id).select('-password')
+  if (user && user.passwordChangedAt) {
+    const changed = Math.floor(user.passwordChangedAt.getTime() / 1000)
+    if (data.iat < changed) {
+      return null
+    }
+  }
+  return user
 }
 
 async function auth(req, res, next) {

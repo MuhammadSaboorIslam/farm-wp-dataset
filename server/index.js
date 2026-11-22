@@ -1,30 +1,21 @@
 require('dotenv').config()
-const fs = require('fs')
 const path = require('path')
 const http = require('http')
 const express = require('express')
 const cors = require('cors')
-const compression = require('compression')
+const cookieParser = require('cookie-parser')
 const connectDB = require('./config/db')
 const { setupSocket } = require('./socket')
-const { corsOptions, securityHeaders, cleanbody, loginLimit, forgotLimit, registerLimit } = require('./security')
-
+const { corsOptions, securityHeaders, cleanbody } = require('./security') 
 const app = express()
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(securityHeaders)
 app.use(cors(corsOptions))
-app.use(compression())
 app.use(express.json({ limit: '15mb' }))
+app.use(cookieParser())
 app.use(cleanbody)
 
-app.use('/api/auth/login', loginLimit)
-app.use('/api/auth/forgot', forgotLimit)
-app.use('/api/auth/register', registerLimit)
-
-app.get('/api/health', (req, res) => {
-  res.json({ ok: true })
-})
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/products', require('./routes/products'))
 app.use('/api/farms', require('./routes/farms'))
@@ -38,23 +29,6 @@ app.use('/api/wishlist', require('./routes/wishlist'))
 app.use('/api', (req, res) => {
   res.status(404).json({ message: 'No route for ' + req.method + ' ' + req.originalUrl })
 })
-
-const dist = path.join(__dirname, '../client/dist')
-if (fs.existsSync(path.join(dist, 'index.html'))) {
-  app.use(
-    express.static(dist, {
-      setHeaders(res, file) {
-        if (/[\\/]assets[\\/]/.test(file) || /[\\/](img|icons)[\\/]/.test(file))
-          res.set('Cache-Control', 'public, max-age=604800, immutable')
-        else res.set('Cache-Control', 'no-cache')
-      },
-    }),
-  )
-  app.get(/^\/(?!api|socket\.io).*/, (req, res) => {
-    res.set('Cache-Control', 'no-cache')
-    res.sendFile(path.join(dist, 'index.html'))
-  })
-}
 
 app.use((err, req, res, next) => {
   if (err.name === 'CastError') {

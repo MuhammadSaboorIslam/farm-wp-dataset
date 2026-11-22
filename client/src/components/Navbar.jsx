@@ -9,7 +9,7 @@ import { setFilters, resetFilters } from '../redux/products'
 import { ShortDate } from '../helpers'
 import { Icon } from './Bits'
 import { io } from 'socket.io-client'
-import { USE_MOCK } from '../api'
+import { post } from '../api'
 
 const ROLE_LINE = { customer: 'Customer', farmer: 'Farmer', rider: 'Rider', admin: 'Admin' }
 
@@ -36,7 +36,7 @@ const MENU_LINKS = {
 
 function BellIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
       <path d="M12 2a6 6 0 0 0-6 6v3.6L4.3 15a1 1 0 0 0 .9 1.5h13.6a1 1 0 0 0 .9-1.5L18 11.6V8a6 6 0 0 0-6-6zm0 20a3 3 0 0 0 3-3H9a3 3 0 0 0 3 3z" />
     </svg>
   )
@@ -44,14 +44,7 @@ function BellIcon() {
 
 function SearchIcon({ className = 'w-4 h-4' }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-3.5-3.5" />
     </svg>
@@ -87,10 +80,10 @@ function Navbar() {
   }, [user, location.pathname, dispatch])
 
   useEffect(()=>{
-    if (!user || USE_MOCK) {
+    if (!user) {
       return
     }
-    const socket = io({ auth: { token: localStorage.getItem('token') } })
+    const socket = io()
     socket.on('notification', () => dispatch(loadNotifications()))
     return () => socket.disconnect()
   }, [user, dispatch])
@@ -128,6 +121,7 @@ function Navbar() {
 
   function Logout() {
     closeall()
+    post('/auth/logout').catch(() => {})
     dispatch(logoutUser())
     navigate('/')
   }
@@ -201,7 +195,6 @@ function Navbar() {
   const searchBox = (wide) => (
     <form
       onSubmit={search}
-      role="search"
       className={
         'flex items-center rounded-lg bg-white/15 focus-within:bg-white focus-within:text-gray-800 text-green-50 transition ' +
         (wide ? 'w-full' : 'w-44 lg:w-52')
@@ -212,7 +205,6 @@ function Navbar() {
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Search"
-        aria-label="Search products"
         className="w-full bg-transparent px-2 py-2 text-sm placeholder-green-100 focus:placeholder-gray-400 focus:outline-none"
       />
     </form>
@@ -225,7 +217,6 @@ function Navbar() {
           className="relative p-2 rounded-lg hover:bg-white/10 cursor-pointer text-white"
           onClick={ToggleBell}
           title="Notifications"
-          aria-expanded={open}
         >
           <BellIcon />
           {unread > 0 && <span className="badge">{unread}</span>}
@@ -291,7 +282,6 @@ function Navbar() {
                   setAccount(!account)
                 }}
                 title="Your account"
-                aria-expanded={account}
               >
                 {user.name[0].toUpperCase()}
               </button>
@@ -350,7 +340,6 @@ function Navbar() {
               setMenu(!menu)
             }}
             title="Menu"
-            aria-expanded={menu}
           >
             <svg
               viewBox="0 0 24 24"
@@ -359,7 +348,6 @@ function Navbar() {
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
-              aria-hidden="true"
             >
               {menu ? <path d="M6 6l12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
             </svg>

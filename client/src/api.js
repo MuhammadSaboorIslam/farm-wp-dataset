@@ -1,38 +1,27 @@
-import { mockrequest } from './mock/handler'
+let onlogout = null
 
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+export function whenLoggedOut(fn) {
+  onlogout = fn
+}
 
-function token() {
-  return localStorage.getItem('token')
+function loggedout() {
+  localStorage.removeItem('user')
+  if (onlogout) {
+    onlogout()
+  }
 }
 
 async function request(method, url, body) {
-  if (USE_MOCK) {
-    try {
-      const data = await mockrequest(method, url, body ? JSON.parse(JSON.stringify(body)) : body, token())
-      return JSON.parse(JSON.stringify(data))
-    } catch (e) {
-      if (e.status === 401) {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-      }
-      throw e
-    }
-  }
   const options = { method: method, headers: {} }
   if (body) {
     options.headers['Content-Type'] = 'application/json'
     options.body = JSON.stringify(body)
   }
-  if (token()) {
-    options.headers['Authorization'] = 'Bearer ' + token()
-  }
   const res = await fetch('/api' + url, options)
   const data = await res.json()
   if (!res.ok) {
     if (res.status === 401) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
+      loggedout()
     }
     throw new Error(data.message || 'Request failed with status ' + res.status)
   }

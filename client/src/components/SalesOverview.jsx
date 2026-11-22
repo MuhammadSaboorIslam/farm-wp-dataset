@@ -39,7 +39,7 @@ function Sparkline({ values }) {
   const pts = values.map((v, i) => [(i / (values.length - 1)) * w, h - 3 - (v / max) * (h - 6)])
   const last = pts[pts.length - 1]
   return (
-    <svg width={w} height={h} className="overflow-visible" aria-hidden="true">
+    <svg width={w} height={h} className="overflow-visible">
       <polyline
         points={pts.map((p) => p.join(',')).join(' ')}
         fill="none"
@@ -59,7 +59,7 @@ function Delta({ now, prev, weeks }) {
   const up = change >= 0
   return (
     <p className={'text-xs mt-1 font-medium ' + (up ? 'text-green-700' : 'text-red-600')}>
-      <span aria-hidden="true">{up ? '▲' : '▼'}</span> {Math.abs(change)}%{' '}
+      <span>{up ? '▲' : '▼'}</span> {Math.abs(change)}%{' '}
       <span className="text-gray-500 font-normal">vs previous {weeks} weeks</span>
     </p>
   )
@@ -92,7 +92,7 @@ export function NumbersTable({ head, rows }) {
   const [open, setOpen] = useState(false)
   return (
     <div className="mt-4 border-t border-gray-100 pt-3">
-      <button type="button" className="text-sm link" onClick={() => setOpen(!open)} aria-expanded={open}>
+      <button type="button" className="text-sm link" onClick={() => setOpen(!open)}>
         {open ? 'Hide numbers' : 'Show numbers'}
       </button>
       {open && (
@@ -157,13 +157,7 @@ function SalesTrend({ weekly, weeks }) {
           <span className="w-4 h-0.5 rounded" style={{ background: GREY }}></span>Previous {weeks} weeks
         </li>
       </ul>
-      <div
-        className="h-64"
-        role="img"
-        aria-label={
-          'Weekly sales for the last ' + weeks + ' weeks compared with the ' + weeks + ' weeks before'
-        }
-      >
+      <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
             <defs>
@@ -273,7 +267,7 @@ function BusiestDays({ days }) {
         <b className="text-gray-900">{names}</b> {busiest.length > 1 ? 'tie for' : 'gets'} the most orders (
         {most})
       </p>
-      <div className="h-40" role="img" aria-label={days.map((d) => d.day + ' ' + d.orders).join(', ')}>
+      <div className="h-40">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={days} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
             <XAxis dataKey="day" tick={AXIS} tickLine={false} axisLine={{ stroke: '#d1d5db' }} />
@@ -304,7 +298,7 @@ function RatingBreakdown({ ratings, average, count }) {
       </p>
       <ul className="flex flex-col gap-2">
         {[5, 4, 3, 2, 1].map((n) => (
-          <li key={n} className="flex items-center gap-2 text-sm" aria-label={n + ' stars: ' + ratings[n]}>
+          <li key={n} className="flex items-center gap-2 text-sm">
             <span className="w-8 text-gray-600 tabular-nums">{n} ★</span>
             <div className="flex-1 h-2 rounded-full" style={{ background: AMBER_TRACK }}>
               <div
@@ -334,11 +328,7 @@ export function StatusBar({ counts }) {
         <span className="text-3xl font-semibold text-gray-900">{total}</span>{' '}
         <span className="text-gray-500 text-sm">orders placed</span>
       </p>
-      <div
-        className="flex gap-0.5 h-7"
-        role="img"
-        aria-label={parts.map((s) => s.label + ' ' + counts[s.key]).join(', ')}
-      >
+      <div className="flex gap-0.5 h-7">
         {parts.map((s) => {
           const share = Math.round((counts[s.key] / total) * 100)
           return (
@@ -357,7 +347,6 @@ export function StatusBar({ counts }) {
               onPointerLeave={() => setHover(null)}
               onFocus={() => setHover(s.key)}
               onBlur={() => setHover(null)}
-              aria-label={s.label + ': ' + counts[s.key] + ' orders, ' + share + '%'}
             >
               {share >= 12 && <span>{share}%</span>}
               {hover === s.key && (
@@ -426,14 +415,13 @@ function SalesOverview() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-2 mb-4" role="group" aria-label="Date range">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="text-sm text-gray-500 mr-1">Showing</span>
         {RANGES.map((r) => (
           <button
             key={r}
             type="button"
             onClick={() => pickrange(r)}
-            aria-pressed={weeks === r}
             className={
               'text-sm px-3 py-1.5 rounded-full border cursor-pointer ' +
               (weeks === r

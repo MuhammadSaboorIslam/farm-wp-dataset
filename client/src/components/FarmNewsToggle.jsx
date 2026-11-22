@@ -21,8 +21,6 @@ function FarmNewsToggle({ compact = false }) {
     <label className={'flex items-start gap-3 cursor-pointer ' + (compact ? 'text-sm' : '')}>
       <button
         type="button"
-        role="switch"
-        aria-checked={on}
         onClick={toggle}
         disabled={saving}
         className={

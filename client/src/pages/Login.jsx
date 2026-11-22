@@ -76,12 +76,6 @@ function Login() {
             Register
           </Link>
         </p>
-        {import.meta.env.VITE_USE_MOCK === 'true' && (
-          <p className="muted mt-3">
-            Demo accounts (password is "password"): customer@test.com, ali@farm.com (farmer), bilal@farm.com
-            (unverified farmer), rider@test.com, admin@farmdirect.com
-          </p>
-        )}
       </div>
     </AuthSplit>
   )

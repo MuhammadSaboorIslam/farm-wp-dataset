@@ -81,7 +81,7 @@ function AdminOverview({ stats, onPending }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card title="Sales across all farms" sub="Rupees per week, last 12 weeks" className="lg:col-span-2">
-          <div className="h-60" role="img" aria-label="Weekly sales across all farms for 12 weeks">
+          <div className="h-60">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
                 <defs>
@@ -151,11 +151,7 @@ function AdminOverview({ stats, onPending }) {
         </Card>
 
         <Card title="New accounts" sub="Sign ups per week">
-          <div
-            className="h-40"
-            role="img"
-            aria-label={'New accounts per week: ' + stats.weekly.map((w) => w.signups).join(', ')}
-          >
+          <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data} margin={{ top: 4, right: 0, bottom: 0, left: 0 }}>
                 <XAxis

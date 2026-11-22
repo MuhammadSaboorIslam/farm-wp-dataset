@@ -10,6 +10,17 @@ function maketoken(user) {
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' })
 }
 
+const WEEK = 7 * 24 * 60 * 60 * 1000
+
+function setcookie(res, user) {
+  res.cookie('token', maketoken(user), {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: WEEK,
+  })
+}
+
 function getextras(role, body) {
   function text(key) {
     return String(body[key] || '').trim()
@@ -70,7 +81,8 @@ async function register(req, res, next) {
       farmName: user.farmName,
       link: link(home),
     })
-    res.status(201).json({ user: accountuser(user), token: maketoken(user) })
+    setcookie(res, user)
+    res.status(201).json({ user: accountuser(user) })
   } catch (err) {
     next(err)
   }
@@ -94,10 +106,16 @@ async function login(req, res, next) {
     if (user.blocked) {
       return res.status(403).json({ message: 'This account has been blocked. Contact the admin.' })
     }
-    res.json({ user: accountuser(user), token: maketoken(user) })
+    setcookie(res, user)
+    res.json({ user: accountuser(user) })
   } catch (err) {
     next(err)
   }
+}
+
+function logout(req, res) {
+  res.clearCookie('token', { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production' })
+  res.json({ ok: true })
 }
 
 async function me(req, res) {
@@ -146,7 +164,9 @@ async function changePassword(req, res, next) {
       return res.status(400).json({ message: 'Current password is wrong' })
     }
     user.password = await bcrypt.hash(password, 10)
+    user.passwordChangedAt = new Date()
     await user.save()
+    setcookie(res, user)
     res.json({ ok: true })
   } catch (err) {
     next(err)
@@ -208,6 +228,7 @@ async function resetPassword(req, res, next) {
         .json({ message: 'This reset link is invalid or has expired. Ask for a new one.' })
     }
     user.password = await bcrypt.hash(password, 10)
+    user.passwordChangedAt = new Date()
     user.resetTokenHash = null
     user.resetTokenExpires = null
     await user.save()
@@ -231,6 +252,7 @@ async function updateSettings(req, res, next) {
 module.exports = {
   register,
   login,
+  logout,
   me,
   updateMe,
   changePassword,

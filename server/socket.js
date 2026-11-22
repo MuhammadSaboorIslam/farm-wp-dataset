@@ -4,11 +4,23 @@ const { allowedOrigins } = require('./security')
 
 let io = null
 
+function readcookie(header, name) {
+  const parts = String(header || '').split(';')
+  for (let i = 0; i < parts.length; i++) {
+    const pair = parts[i].trim().split('=')
+    if (pair[0] === name) {
+      return decodeURIComponent(pair[1] || '')
+    }
+  }
+  return ''
+}
+
 function setupSocket(server) {
   io = new Server(server, { cors: { origin: allowedOrigins() } })
   io.use((socket, next) => {
     try {
-      const data = jwt.verify(socket.handshake.auth.token, process.env.JWT_SECRET)
+      const token = readcookie(socket.handshake.headers.cookie, 'token')
+      const data = jwt.verify(token, process.env.JWT_SECRET)
       socket.userId = String(data.id)
       next()
     } catch (err) {

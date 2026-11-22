@@ -34,42 +34,25 @@ const EMPTY = {
 }
 
 function RolePicker({ onPick }) {
-  const words = ['Who', 'are', 'you?']
-  const title = []
-  for (let i = 0; i < words.length; i++) {
-    title.push(
-      <span key={i} className="rise inline-block mr-[0.3em]" style={{ animationDelay: i * 0.12 + 's' }}>
-        {words[i]}
-      </span>,
-    )
-  }
   const cards = []
   for (let i = 0; i < ROLES.length; i++) {
     const r = ROLES[i]
     cards.push(
-      <button
-        key={r.key}
-        type="button"
-        className="role-card pop"
-        style={{ animationDelay: 0.35 + i * 0.12 + 's' }}
-        onClick={() => onPick(r.key)}
-      >
+      <button key={r.key} type="button" className="role-card pop" onClick={() => onPick(r.key)}>
         <span className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center shrink-0">
-          <img src={r.icon} alt="" className="w-10 h-10 bob" style={{ animationDelay: i * 0.4 + 's' }} />
+          <img src={r.icon} alt="" className="w-10 h-10 bob" />
         </span>
         <span className="flex-1">
           <span className="block text-lg font-semibold">{r.title}</span>
           <span className="block muted">{r.text}</span>
         </span>
-        <span className="text-green-700 text-xl" aria-hidden="true">
-          &rarr;
-        </span>
+        <span className="text-green-700 text-xl">&rarr;</span>
       </button>,
     )
   }
   return (
     <>
-      <h1 className="text-3xl sm:text-4xl font-bold text-green-800">{title}</h1>
+      <h1 className="text-3xl sm:text-4xl font-bold text-green-800 rise">Who are you?</h1>
       <p className="muted mt-2 rise" style={{ animationDelay: '0.3s' }}>
         Pick one and we will show you the right sign up form.
       </p>

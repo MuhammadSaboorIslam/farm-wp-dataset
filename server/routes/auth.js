@@ -1,16 +1,16 @@
 const express = require('express')
-const { register, login, me, updateMe, changePassword, forgotPassword, resetPassword, updateSettings } = require('../controllers/authController')
+const { register, login, logout, me, updateMe, changePassword, forgotPassword, resetPassword, updateSettings } = require('../controllers/authController')
 const { auth } = require('../middleware')
+const { loginLimit, forgotLimit, registerLimit } = require('../security')
 
 const router = express.Router()
-
-router.post('/register', register)
-router.post('/login', login)
-router.post('/forgot', forgotPassword)
+router.post('/register', registerLimit, register)
+router.post('/login', loginLimit, login)
+router.post('/logout', logout)
+router.post('/forgot', forgotLimit, forgotPassword)
 router.post('/reset', resetPassword)
 router.get('/me', auth, me)
 router.put('/me', auth, updateMe)
 router.put('/password', auth, changePassword)
 router.put('/settings', auth, updateSettings)
-
 module.exports = router

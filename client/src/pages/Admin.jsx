@@ -291,13 +291,11 @@ function Admin() {
               value={userQ}
               onChange={(e) => setUserQ(e.target.value)}
               placeholder="Search name, email or farm"
-              aria-label="Search users"
             />
             <select
               className="input mt-0 sm:max-w-44"
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              aria-label="Filter by role"
             >
               <option value="">All roles</option>
               <option value="customer">Customers</option>
@@ -335,7 +333,6 @@ function Admin() {
               value={productQ}
               onChange={(e) => setProductQ(e.target.value)}
               placeholder="Search product, category or farm"
-              aria-label="Search products"
             />
             <p className="muted sm:ml-auto self-center">
               Hidden products disappear from the shop until you unhide them. The farmer gets a notification.

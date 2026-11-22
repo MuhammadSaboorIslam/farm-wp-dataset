@@ -32,8 +32,6 @@ function WishButton({ product, className = '', withLabel = false }) {
       type="button"
       onClick={toggle}
       title={label}
-      aria-label={label}
-      aria-pressed={saved}
       className={'inline-flex items-center justify-center gap-2 cursor-pointer transition ' + className}
     >
       <svg
@@ -42,7 +40,6 @@ function WishButton({ product, className = '', withLabel = false }) {
         fill={saved ? 'currentColor' : 'none'}
         stroke="currentColor"
         strokeWidth="2"
-        aria-hidden="true"
       >
         <path
           strokeLinecap="round"

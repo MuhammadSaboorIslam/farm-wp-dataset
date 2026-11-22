@@ -59,10 +59,4 @@ function findcity(text) {
   return best
 }
 
-function pointfor(text) {
-  const city = findcity(text)
-  if (!city) return null
-  return { type: 'Point', coordinates: [CITIES[city][1], CITIES[city][0]] }
-}
-
-module.exports = { CITIES, findcity, pointfor }
+module.exports = { CITIES, findcity }

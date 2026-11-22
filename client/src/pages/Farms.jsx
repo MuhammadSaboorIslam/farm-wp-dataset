@@ -172,14 +172,7 @@ function Farms() {
               (usingGps ? 'ring-2 ring-green-300' : '')
             }
           >
-            <svg
-              viewBox="0 0 24 24"
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="3" />
               <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
               <circle cx="12" cy="12" r="7" />
@@ -233,7 +226,7 @@ function Farms() {
             )}
             {search && <> matching &ldquo;{search}&rdquo;</>}
           </p>
-          {data.farms.length === 0 && <p className="empty">No farms found. Try another search.</p>}
+          {data.farms.length === 0 && <p className="empty">No farms found.</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.farms.map((item) => (
               <FarmCard key={item.farm.id} item={item} canFollow={canFollow} onFollow={follow} />
